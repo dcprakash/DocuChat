@@ -13,5 +13,4 @@ pillow-heif
 opencv-python
 pdf2image
 pysqlite3
-pysqlite3-binary
 chromadb
