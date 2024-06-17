@@ -9,7 +9,7 @@ import sqlite3
 
 app_logger = logger.get_logger('myapp')
 app_logger.info(f"sql lite version {sqlite3.sqlite_version}")
-app_logger.info(f"sql lite version {sys.version}")
+app_logger.info(f"sys version {sys.version}")
 # Config
 st.set_page_config(layout="wide", page_icon="📖", page_title="DocuChat | Chat-Bot 📖")
 
