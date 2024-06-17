@@ -1,8 +1,8 @@
 __import__('pysqlite3')
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 import os
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import streamlit as st
 from src.utils.openai_models import configure_endpoints

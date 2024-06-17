@@ -1,8 +1,9 @@
 __import__('pysqlite3')
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 import os
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
 
 import streamlit as st
 from tempfile import NamedTemporaryFile
@@ -12,8 +13,6 @@ from src.modules.Sidebar import Sidebar
 from src.utils.frontend import display, chat_history
 from src.utils.openai_models import load_api_key
 
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 st.set_page_config(page_title="Simple Chat")
 layout = Layout()
