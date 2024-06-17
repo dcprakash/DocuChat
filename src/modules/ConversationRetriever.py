@@ -5,6 +5,13 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import streamlit as st
+from streamlit import logger
+import sqlite3
+
+app_logger = logger.get_logger('myapp')
+app_logger.info(f"sql lite version {sqlite3.sqlite_version}")
+app_logger.info(f"sql lite version {sys.version}")
+
 from src.utils.openai_models import configure_endpoints
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter

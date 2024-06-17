@@ -6,6 +6,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 
 import streamlit as st
+from streamlit import logger
+import sqlite3
+
+app_logger = logger.get_logger('myapp')
+app_logger.info(f"sql lite version {sqlite3.sqlite_version}")
+app_logger.info(f"sql lite version {sys.version}")
+
 from tempfile import NamedTemporaryFile
 from src.modules.Layout import Layout
 from src.modules.ConversationRetriever import ConversationRetrieverAgent
