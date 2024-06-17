@@ -1,0 +1,133 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+src/modules/__pycache__/
+src/modules/__pycache__/*
+**/__pycache__/
+**/*.pyc
+*.py[cod]
+*$py.class
+
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+nosetests.xml
+coverage/
+*.coveragerc
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# dotenv
+.env
+.env.*
+.venv
+
+# Virtualenv
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+venv/*
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# VSCode
+.vscode/
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-workspace
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-workspace
+
+# Streamlit specific files
+.streamlit/
+
+# Pyre type checker
+.pyre/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pylint
+.pylint.d/
+
+# Environments
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Local history for JetBrains products
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Other
+.DS_Store
+Thumbs.db
+desktop.ini
+src/modules/__pycache__/ConversationRetriever.cpython-312.pyc
+src/modules/__pycache__/Layout.cpython-312.pyc
+src/modules/__pycache__/Sidebar.cpython-312.pyc
+src/utils/__pycache__/frontend.cpython-312.pyc
+src/utils/__pycache__/openai_models.cpython-312.pyc
+src/modules/__pycache__/ConversationRetriever.cpython-312.pyc
+src/modules/__pycache__/Layout.cpython-312.pyc
+src/modules/__pycache__/Sidebar.cpython-312.pyc
+src/utils/__pycache__/frontend.cpython-312.pyc
+src/utils/__pycache__/openai_models.cpython-312.pyc

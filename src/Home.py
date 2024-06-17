@@ -5,8 +5,8 @@ st.set_page_config(layout="wide", page_icon="📖", page_title="DocuChat | Chat-
 
 # Contact
 with st.sidebar.expander("📖 Contact"):
-    st.write("###### GitHub: [github](https://www.linkedin.com/in/chinvar/)")
-    st.write("###### Medium: [medium](https://www.linkedin.com/in/chinvar/)")
+    st.write("###### GitHub: [github](https://github.com/dcprakash/DocuChat)")
+    st.write("###### Medium: [medium](https://medium.com/@chinvarpd/docuchat-empowering-you-to-explore-and-understand-your-data-effortlessly-part-1-bfd88f5e47d2/)")
     st.write("###### LinkedIn: [linkedin](https://www.linkedin.com/in/chinvar/)")
     st.write("###### Mail: chinvarpd@gmail.com")
     st.write("###### Created by **Darshan Chinvar**")
