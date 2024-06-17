@@ -12,5 +12,5 @@ pdfminer.six
 pillow-heif
 opencv-python
 pdf2image
-pysqlite3
+pysqlite==2.8.3
 chromadb
