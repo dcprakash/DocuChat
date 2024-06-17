@@ -1,4 +1,4 @@
-streamlit
+streamlit==1.35.0
 pydantic
 unstructured[all-docs]
 langchain-core
@@ -13,3 +13,4 @@ pillow-heif
 opencv-python
 pdf2image
 pysqlite3-binary
+chromadb==0.5.0

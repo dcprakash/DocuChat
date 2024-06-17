@@ -1,8 +1,8 @@
+__import__('pysqlite3')
 import sys
-import os
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
-# # Add the root directory to the PYTHONPATH
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+import os
 
 import streamlit as st
 from tempfile import NamedTemporaryFile
