@@ -9,7 +9,7 @@ DocuChat is an advanced chatbot that empowers you to explore and understand your
 
 ## Prerequisites
 - Refer to below blogs for details:
-- [part-1](https://pip.pypa.io/en/stable/installation/)
+- [part-1](https://medium.com/@chinvar/docuchat-empowering-you-to-explore-and-understand-your-data-effortlessly-part-1-bfd88f5e47d2)
 
 
 ## Prerequisites
@@ -19,7 +19,7 @@ DocuChat is an advanced chatbot that empowers you to explore and understand your
 ## Installation
 1. Clone the repository:
     ```sh
-    git clone https://github.com/your-username/docuchat.git
+    git clone https://github.com/dcprakash/DocuChat.git
     cd docuchat
     ```
 
