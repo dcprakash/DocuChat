@@ -52,46 +52,50 @@ class SimpleBot:
 
     @chat_history
     def main(self):
-        sidebar = Sidebar()
-        user_api_key = None
-        user_api_key = load_api_key()
-        if not user_api_key:
-            layout.show_api_key_missing()
-        else:
-            os.environ["OPENAI_API_KEY"] = user_api_key
+        try:
+            sidebar = Sidebar()
+            user_api_key = None
+            user_api_key = load_api_key()
+            if not user_api_key:
+                layout.show_api_key_missing()
+            else:
+                os.environ["OPENAI_API_KEY"] = user_api_key
 
-        sidebar.show_options()
-        sidebar.about()
+            sidebar.show_options()
+            sidebar.about()
 
-        if user_api_key:
-            uploaded_file = st.sidebar.file_uploader(label='Upload PDF files', type=['pdf'], accept_multiple_files=False)
-        
-            if not uploaded_file:
-                st.error("Please upload PDF documents to proceed.")
-                st.stop()
+            if user_api_key:
+                uploaded_file = st.sidebar.file_uploader(label='Upload PDF files', type=['pdf'], accept_multiple_files=False)
+            
+                if not uploaded_file:
+                    st.error("Please upload PDF documents to proceed.")
+                    st.stop()
 
-            with NamedTemporaryFile(suffix=".pdf") as temp:
-                temp.write(uploaded_file.getvalue())
+                with NamedTemporaryFile(suffix=".pdf") as temp:
+                    temp.write(uploaded_file.getvalue())
 
-                qa_chain = self.setup_qa_chain_simple(temp.name)
+                    qa_chain = self.setup_qa_chain_simple(temp.name)
 
-                user_query = st.chat_input(placeholder="Ask questions on your document!")
+                    user_query = st.chat_input(placeholder="Ask questions on your document!")
 
-                if uploaded_file and user_query:
-                    display(user_query, 'user')
+                    if uploaded_file and user_query:
+                        display(user_query, 'user')
 
-                    with st.chat_message("assistant"):
-                        result = self.get_answers(qa_chain, user_query)
-                        response = result["answer"]
-                        st.write(response)
+                        with st.chat_message("assistant"):
+                            result = self.get_answers(qa_chain, user_query)
+                            response = result["answer"]
+                            st.write(response)
 
-                        # to show references
-                        for idx, doc in enumerate(result['context'], 1):
-                            # filename = os.path.basename(doc.metadata['source'])
-                            page_num = doc.metadata['page']
-                            ref_title = f"{idx}: *page.{page_num}*"
-                            with st.popover(ref_title):
-                                st.caption(doc.page_content)
+                            # to show references
+                            for idx, doc in enumerate(result['context'], 1):
+                                # filename = os.path.basename(doc.metadata['source'])
+                                page_num = doc.metadata['page']
+                                ref_title = f"{idx}: *page.{page_num}*"
+                                with st.popover(ref_title):
+                                    st.caption(doc.page_content)
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+            app_logger.error("An error occurred", exc_info=True)
 
 if __name__ == "__main__":
     obj = SimpleBot()
