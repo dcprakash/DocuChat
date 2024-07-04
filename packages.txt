@@ -4,4 +4,4 @@ default-libmysqlclient-dev
 sqlite3
 libsqlite3-dev
 python3-dev
-
+poppler
