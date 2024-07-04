@@ -16,10 +16,6 @@ opencv-python
 pdf2image
 pysqlite3-binary
 chromadb
-langchain-retrievers==0.0.10
-langchain-storage==0.0.10
-python-dotenv==0.19.2
-pypdf2==1.26.0
 python-poppler
 poppler-utils
 pytesseract
