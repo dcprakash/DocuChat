@@ -17,7 +17,7 @@ pdf2image
 pysqlite3-binary
 chromadb
 python-poppler
-poppler-utils
+#poppler-utils
 pytesseract
 nltk==3.8.1
 base64
