@@ -1,6 +1,7 @@
 import os
-__import__('pysqlite3')
 import sys
+
+__import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
@@ -24,7 +25,7 @@ from src.utils.openai_models import load_api_key
 st.set_page_config(page_title="Simple Chat")
 layout = Layout()
 layout.show_header("pdf")
-st.info('Chat with your documents! It does NOT answer questions on tables or images in pdf, for this release.')
+st.info('Basic RAG with GPT-4o! It does NOT answer questions on tables or images in pdf, for this release.')
 
 class SimpleBot:
     def __init__(self):

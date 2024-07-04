@@ -1,15 +1,18 @@
 # DocuChat
 DocuChat is an advanced chatbot that empowers you to explore and understand your data effortlessly. It integrates Langchain, Langsmith, Unstructured Loader, ChromaDB, and Streamlit to offer dynamic, context-aware interactions for deeper insights into your PDF data.
 
+## Medium Blog:
+- [part-1](https://medium.com/@chinvar/docuchat-empowering-you-to-explore-and-understand-your-data-effortlessly-part-1-bfd88f5e47d2)
+- [part-2](https://medium.com/@chinvar/docuchat-empowering-you-to-explore-and-understand-your-data-effortlessly-part-1-bfd88f5e47d2)
+
+
 ## Features
 - Extracts and analyzes text, tables, and images from PDF documents.
 - Uses sophisticated LLMs to provide context-aware responses.
 - Supports dynamic interactions through a Streamlit web interface.
 
 
-## Prerequisites
-- Refer to below blogs for details:
-- [part-1](https://medium.com/@chinvar/docuchat-empowering-you-to-explore-and-understand-your-data-effortlessly-part-1-bfd88f5e47d2)
+
 
 
 ## Prerequisites
