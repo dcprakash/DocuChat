@@ -1,8 +1,8 @@
 import os
 import sys
 
-# __import__('pysqlite3')
-# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 
@@ -74,9 +74,9 @@ class SimpleBot:
                 for file in files:
                     if os.path.isfile(file):
                         os.remove(file)
-                print("All files in the images/ directory have been deleted.")
+                app_logger.info(f"All files in the images/ directory have been deleted.")
             else:
-                print(f"The {images_dir} directory does not exist.")
+                app_logger.info(f"The {images_dir} directory does not exist.")
 
 
             
