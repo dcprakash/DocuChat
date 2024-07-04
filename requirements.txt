@@ -1,6 +1,8 @@
 streamlit==1.35.0
 pydantic
 unstructured[all-docs]
+unstructured_inference
+unstructured_pytesseract
 langchain-core
 langchain-openai
 langchain-community
@@ -14,3 +16,14 @@ opencv-python
 pdf2image
 pysqlite3-binary
 chromadb
+langchain-retrievers==0.0.10
+langchain-storage==0.0.10
+python-dotenv==0.19.2
+pypdf2==1.26.0
+python-poppler
+poppler-utils
+pytesseract
+nltk==3.8.1
+base64
+uuid
+psutil
