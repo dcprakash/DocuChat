@@ -19,7 +19,7 @@ chromadb
 #python-poppler
 #poppler-utils
 pytesseract
-nltk==3.8.1
+#nltk
 base64
 uuid
 psutil
