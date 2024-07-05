@@ -116,13 +116,31 @@ class Summarize:
             "top_p": 0.95,
             "max_tokens": 1000,
         }
-        try:
-            api_url = "https://api.openai.com/v1/chat/completions"
-            response_content = requests.post(api_url, headers=headers, json=payload)
-            response_content = response_content.json()
-            return response_content["choices"][0]["message"]["content"]
-        except Exception as e:
-            print(f"Failed to call GPT-4 Turbo with Vision API. Error: {e}")
+        # try:
+        #     api_url = "https://api.openai.com/v1/chat/completions"
+        #     response_content = requests.post(api_url, headers=headers, json=payload)
+        #     response_content = response_content.json()
+        #     return response_content["choices"][0]["message"]["content"]
+        # except Exception as e:
+        #     print(f"Failed to call GPT-4 Turbo with Vision API. Error: {e}")
+            
+        from openai import RateLimitError
+        import time
+        import random
+        
+        for attempt in range(5):  # Retry up to 5 times
+            try:
+                api_url = "https://api.openai.com/v1/chat/completions"
+                response = requests.post(api_url, headers=headers, json=payload)
+                response_content = response.json()
+                return response_content["choices"][0]["message"]["content"]
+            except RateLimitError:
+                wait_time = (2 ** attempt) + (random.randint(0, 1000) / 1000)
+                print(f"Rate limit exceeded. Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            except Exception as e:
+                print(f"Failed to call GPT-4 with Vision API. Error: {e}")
+                break
 
     def image_summarize(self, img_base64):
         """Make image summary"""
