@@ -1,21 +1,18 @@
 import os
 import sys
 
+# Adjust import for pysqlite3
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
+import glob
+import sqlite3
+from tempfile import NamedTemporaryFile
 
 import streamlit as st
 from streamlit import logger
-import sqlite3
-import glob
 
-app_logger = logger.get_logger('myapp')
-app_logger.info(f"sql lite version {sqlite3.sqlite_version}")
-app_logger.info(f"sql lite version {sys.version}")
-
-from tempfile import NamedTemporaryFile
 from src.modules.Layout import Layout
 from modules.MultiModalRetriever import MultiModalRetrieverAgent
 from src.modules.Sidebar import Sidebar
@@ -23,14 +20,21 @@ from src.utils.frontend import display, chat_history
 from src.utils.openai_models import load_api_key
 
 
+
+app_logger = logger.get_logger('myapp')
+app_logger.info(f"SQLite version: {sqlite3.sqlite_version}")
+app_logger.info(f"Python version: {sys.version}")
+
 st.set_page_config(page_title="Advanced Chat")
 layout = Layout()
 layout.show_header("pdf")
 st.info('Multimodal Retrieval Augmented Generation (RAG) with GPT-4o. It can answer questions on tables or images in pdf')
 
+
 class SimpleBot:
     def __init__(self):
         self.llm, self.embeddings = None, None
+        app_logger.info("SimpleBot class initialized")
 
     @st.spinner('Setting up conversational chain..')
     def setup_qa_chain_simple(self, file_content):
@@ -38,19 +42,21 @@ class SimpleBot:
             agent = MultiModalRetrieverAgent()
             retriever_multi_vector_img, chain_multimodal_rag = agent.process_pdf_advanced(file_content)
             st.session_state['processed_data'] = (retriever_multi_vector_img, chain_multimodal_rag)
+            app_logger.info("Processed data stored in session state")
         else:
             retriever_multi_vector_img, chain_multimodal_rag = st.session_state['processed_data']
+            app_logger.info("Processed data retrieved from session state")
         return retriever_multi_vector_img, chain_multimodal_rag
 
     @st.spinner('Finding answers..')
     def get_answers(self, chain, user_query):
         result = chain.invoke(user_query)
+        app_logger.info(f"Answer found for query: {user_query}")
         return result
 
     @chat_history
     def main(self):
         sidebar = Sidebar()
-        user_api_key = None
         user_api_key = load_api_key()
         if not user_api_key:
             layout.show_api_key_missing()
@@ -62,31 +68,23 @@ class SimpleBot:
 
         if user_api_key:
             uploaded_file = st.sidebar.file_uploader(label='Upload PDF files', type=['pdf'], accept_multiple_files=False)
-            # Define the path to the images directory
-            images_dir = 'figures'
+            images_dir = 'src/modules/images'
 
-            # Check if the directory exists
             if os.path.exists(images_dir):
-                # Get a list of all files in the images directory
                 files = glob.glob(os.path.join(images_dir, '*'))
-                
-                # Loop through and delete each file
                 for file in files:
                     if os.path.isfile(file):
                         os.remove(file)
-                app_logger.info(f"All files in the images/ directory have been deleted.")
+                app_logger.info("All files in the images/ directory have been deleted.")
             else:
                 app_logger.info(f"The {images_dir} directory does not exist.")
 
-
-            
             if not uploaded_file:
                 st.error("Please upload PDF documents to proceed.")
                 st.stop()
 
             with NamedTemporaryFile(suffix=".pdf") as temp:
                 temp.write(uploaded_file.getvalue())
-
                 retriever, qa_chain = self.setup_qa_chain_simple(temp.name)
 
                 user_query = st.chat_input(placeholder="Ask questions on your document!")
@@ -98,6 +96,7 @@ class SimpleBot:
                         result = self.get_answers(qa_chain, user_query)
                         st.write(result)
                         st.session_state.messages.append({"role": "assistant", "content": result})
+
 
 if __name__ == "__main__":
     obj = SimpleBot()

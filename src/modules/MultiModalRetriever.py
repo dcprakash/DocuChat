@@ -1,20 +1,17 @@
 import os
 import sys
 
+# Adjust import for pysqlite3
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
+import uuid
+from typing import Any
+
 import streamlit as st
 from streamlit import logger
 import sqlite3
-
-app_logger = logger.get_logger('myapp')
-app_logger.info(f"sql lite version {sqlite3.sqlite_version}")
-app_logger.info(f"sql lite version {sys.version}")
-
-
-from typing import Any
 from src.utils.openai_models import configure_endpoints
 from utils.summarize import Summarize
 from unstructured.partition.pdf import partition_pdf
@@ -24,35 +21,35 @@ from langchain_community.vectorstores.chroma import Chroma
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.storage import InMemoryStore
 from langchain_core.documents import Document
-import uuid
 from langchain_core.runnables import RunnablePassthrough
+
+
+
+app_logger = logger.get_logger('myapp')
+app_logger.info(f"SQLite version: {sqlite3.sqlite_version}")
+app_logger.info(f"Python version: {sys.version}")
+
 
 class MultiModalRetrieverAgent:
     def __init__(self):
         self.llm, self.embeddings = configure_endpoints()
         self.summarize = Summarize()
         self.path = 'src/modules/images'
+        app_logger.info("MultiModalRetrieverAgent class initialized")
 
-    @st.spinner('Extracting images, tables and text from pdf document..')
+    @st.spinner('Extracting images, tables and text from PDF document..')
     def extract_images(self, files):
         raw_pdf_elements = partition_pdf(
             filename=files,
-            # Using pdf format to find embedded image blocks
             extract_images_in_pdf=True,
-            # Use layout model (YOLOX) to get bounding boxes (for tables) and find titles
-            # Titles are any sub-section of the document
             infer_table_structure=True,
-            # Post processing to aggregate text once we have the title
             chunking_strategy="by_title",
-            # Chunking params to aggregate text blocks
-            # Attempt to create a new chunk 3800 chars
-            # Attempt to keep chunks > 2000 chars
-            # Hard max on chunks
             max_characters=4000,
             new_after_n_chars=3800,
             combine_text_under_n_chars=2000,
             extract_image_block_output_dir=self.path,
         )
+        app_logger.info("Images, tables, and text extracted from PDF")
         return raw_pdf_elements
 
     @st.spinner('Storing data in vector database..')
@@ -62,7 +59,8 @@ class MultiModalRetrieverAgent:
         """
         Create retriever that indexes summaries, but returns raw images or texts
         """
-
+        app_logger.info("Creating multi-vector retriever")
+        
         # Initialize the storage layer
         store = InMemoryStore()
         id_key = "doc_id"
@@ -83,15 +81,13 @@ class MultiModalRetrieverAgent:
             ]
             retriever.vectorstore.add_documents(summary_docs)
             retriever.docstore.mset(list(zip(doc_ids, doc_contents)))
+            app_logger.info(f"Added {len(doc_contents)} documents to retriever")
 
         # Add texts, tables, and images
-        # Check that text_summaries is not empty before adding
         if text_summaries:
             add_documents(retriever, text_summaries, texts)
-        # Check that table_summaries is not empty before adding
         if table_summaries:
             add_documents(retriever, table_summaries, tables)
-        # Check that image_summaries is not empty before adding
         if image_summaries:
             add_documents(retriever, image_summaries, images)
 
@@ -111,9 +107,10 @@ class MultiModalRetrieverAgent:
             | self.llm
             | StrOutputParser()
         )
+        app_logger.info("Multi-modal RAG chain created")
         return chain
 
-    @st.spinner('Extracting Data for simple Q&A..')
+    @st.spinner('Extracting data for simple Q&A..')
     def process_pdf_advanced(self, file_content):
         raw_pdf_elements = self.extract_images(file_content)
         text_summaries, texts, table_summaries, tables = self.summarize.generate_table_summaries(raw_pdf_elements)
@@ -136,4 +133,5 @@ class MultiModalRetrieverAgent:
         )
 
         chain_multimodal_rag = self.multi_modal_rag_chain(retriever_multi_vector_img)
+        app_logger.info("PDF processing and advanced Q&A setup complete")
         return retriever_multi_vector_img, chain_multimodal_rag
