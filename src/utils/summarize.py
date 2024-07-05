@@ -1,9 +1,11 @@
 import os
 import sys
+import platform
 
 # Adjust import for pysqlite3
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+if platform.system() != 'Darwin':  # 'Darwin' is the system name for macOS
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import base64
@@ -80,8 +82,8 @@ class Summarize:
 
         # Apply to text
         texts = [i.text for i in text_elements]
-        text_summaries = texts
-        # text_summaries = summarize_chain.batch(texts, {"max_concurrency": 5})
+        # text_summaries = texts
+        text_summaries = summarize_chain.batch(texts, {"max_concurrency": 5})
 
         # Apply to tables
         tables = [i.text for i in table_elements]
@@ -175,4 +177,5 @@ class Summarize:
                 image_summaries.append(self.image_summarize(base64_image))
 
         app_logger.info("Image summaries generated")
+        app_logger.info(image_summaries)
         return img_base64_list, image_summaries

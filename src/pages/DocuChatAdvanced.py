@@ -1,9 +1,11 @@
 import os
 import sys
+import platform
 
 # Adjust import for pysqlite3
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+if platform.system() != 'Darwin':  # 'Darwin' is the system name for macOS
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import glob
@@ -18,7 +20,7 @@ from modules.MultiModalRetriever import MultiModalRetrieverAgent
 from src.modules.Sidebar import Sidebar
 from src.utils.frontend import display, chat_history
 from src.utils.openai_models import load_api_key
-
+from langchain_community.callbacks import get_openai_callback
 
 
 app_logger = logger.get_logger('myapp')
@@ -50,9 +52,14 @@ class SimpleBot:
 
     @st.spinner('Finding answers..')
     def get_answers(self, chain, user_query):
-        result = chain.invoke(user_query)
-        app_logger.info(f"Answer found for query: {user_query}")
-        return result
+        with get_openai_callback() as cb:
+            result = chain.invoke(user_query)
+            app_logger.info(f"Answer found for query: {user_query}")
+            app_logger.info(f"Total Tokens: {cb.total_tokens}")
+            app_logger.info(f"Prompt Tokens: {cb.prompt_tokens}")
+            app_logger.info(f"Completion Tokens: {cb.completion_tokens}")
+            app_logger.info(f"Total Cost (USD): ${cb.total_cost}")
+            return result
 
     @chat_history
     def main(self):

@@ -1,9 +1,11 @@
 import os
 import sys
+import platform
 
 # Adjust import for pysqlite3
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+if platform.system() != 'Darwin':  # 'Darwin' is the system name for macOS
+    __import__('pysqlite3')
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import uuid
