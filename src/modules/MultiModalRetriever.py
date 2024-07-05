@@ -117,7 +117,10 @@ class MultiModalRetrieverAgent:
         raw_pdf_elements = self.extract_images(file_content)
         text_summaries, texts, table_summaries, tables = self.summarize.generate_table_summaries(raw_pdf_elements)
         img_base64_list, image_summaries = self.summarize.generate_img_summaries(self.path)
-
+        
+        # temporary measure since we dont need to display image back, i also dont want to waste too many tokens
+        img_base64_list = ['xyz' for _ in img_base64_list]
+        
         # The vectorstore to use to index the summaries
         vectorstore = Chroma(
             collection_name="multi_modal_content", embedding_function=self.embeddings
@@ -131,7 +134,7 @@ class MultiModalRetrieverAgent:
             table_summaries,
             tables,
             image_summaries,
-            img_base64_list,
+            img_base64_list
         )
 
         chain_multimodal_rag = self.multi_modal_rag_chain(retriever_multi_vector_img)
