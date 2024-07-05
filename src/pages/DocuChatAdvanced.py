@@ -36,7 +36,7 @@ st.info('Multimodal Retrieval Augmented Generation (RAG) with GPT-4o. It can ans
 class SimpleBot:
     def __init__(self):
         self.llm, self.embeddings = None, None
-        app_logger.info("SimpleBot class initialized")
+        app_logger.info("Advanced Bot class initialized")
 
     @st.spinner('Setting up conversational chain..')
     def setup_qa_chain_simple(self, file_content):
@@ -93,11 +93,15 @@ class SimpleBot:
             with NamedTemporaryFile(suffix=".pdf") as temp:
                 temp.write(uploaded_file.getvalue())
                 retriever, qa_chain = self.setup_qa_chain_simple(temp.name)
-
+                    
                 user_query = st.chat_input(placeholder="Ask questions on your document!")
 
                 if uploaded_file and user_query:
                     display(user_query, 'user')
+                    
+                    docs = retriever.invoke(user_query, k=10)
+                    for doc in docs:
+                        app_logger.info(f"Documents: {doc}.")
 
                     with st.chat_message("assistant"):
                         result = self.get_answers(qa_chain, user_query)
