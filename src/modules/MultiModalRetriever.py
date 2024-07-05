@@ -119,7 +119,7 @@ class MultiModalRetrieverAgent:
         img_base64_list, image_summaries = self.summarize.generate_img_summaries(self.path)
         
         # temporary measure since we dont need to display image back, i also dont want to waste too many tokens
-        img_base64_list = ['' for _ in img_base64_list]
+        img_base64_list = image_summaries[:]
         
         # The vectorstore to use to index the summaries
         vectorstore = Chroma(
