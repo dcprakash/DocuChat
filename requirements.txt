@@ -20,6 +20,6 @@ chromadb
 #poppler-utils
 pytesseract
 #nltk
-base64
-uuid
+#base64
+#uuid
 psutil
